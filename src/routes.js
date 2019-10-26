@@ -9,7 +9,10 @@ import {
 import SignIn from './pages/SignIn';
 import SignUp from './pages/SignUp';
 import Dashboard from './pages/Dashboard';
+import Home from './pages/Home';
 import Profile from './pages/Profile';
+import Indication from './pages/Indication';
+import Vocational from './pages/Vocational';
 
 export default (isSigned = false) =>
   createAppContainer(
@@ -21,7 +24,19 @@ export default (isSigned = false) =>
         }),
         App: createBottomTabNavigator(
           {
-            Dashboard,
+            Home: createStackNavigator(
+              {
+                Dashboard,
+                Indication,
+                Vocational,
+              },
+              {
+                headerMode: 'none',
+                navigationOptions: {
+                  headerVisible: false,
+                },
+              },
+            ),
             Profile,
           },
           {
@@ -31,14 +46,14 @@ export default (isSigned = false) =>
               activeTintColor: '#FFF',
               inactiveTintColor: 'rgba(255, 255, 255, 0.6)',
               style: {
-                backgroundColor: '#402845',
+                backgroundColor: '#10bed8',
               },
             },
-          }
+          },
         ),
       },
       {
         initialRouteName: isSigned ? 'App' : 'Sign',
-      }
-    )
+      },
+    ),
   );

@@ -1,11 +1,11 @@
 /* eslint-disable react/prop-types */
-import React, { useRef, useState, useEffect } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import React, {useRef, useState, useEffect} from 'react';
+import {useSelector, useDispatch} from 'react-redux';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 
 import Background from '../../components/Background';
-import { signOut } from '../../store/modules/auth/actions';
-import { updateProfileRequest } from '../../store/modules/user/actions';
+import {signOut} from '../../store/modules/auth/actions';
+import {updateProfileRequest} from '../../store/modules/user/actions';
 
 import {
   Container,
@@ -46,7 +46,7 @@ export default function Profile() {
         oldPassword,
         password,
         confirmPassword,
-      })
+      }),
     );
   }
 
@@ -120,7 +120,7 @@ export default function Profile() {
           />
 
           <SubmitButton onPress={handleSubmit}>Atualizar perfil</SubmitButton>
-          <LogoutButton onPress={handleLogout}>Sair do MeetApp</LogoutButton>
+          <LogoutButton onPress={handleLogout}>Sair</LogoutButton>
         </Form>
       </Container>
     </Background>
@@ -129,7 +129,7 @@ export default function Profile() {
 
 Profile.navigationOptions = {
   tabBarLabel: 'Meu perfil',
-  tabBarIcon: ({ tintColor }) => (
+  tabBarIcon: ({tintColor}) => (
     <Icon name="person" size={20} color={tintColor} />
   ),
 };

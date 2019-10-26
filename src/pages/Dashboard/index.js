@@ -1,85 +1,46 @@
 /* eslint-disable react/prop-types */
-import React, { useEffect, useState, useMemo } from 'react';
-import { Alert } from 'react-native';
+import React, {useEffect, useState} from 'react';
 import Icon from 'react-native-vector-icons/MaterialIcons';
-import { format, parseISO, addDays, subDays } from 'date-fns';
+import {format, parseISO} from 'date-fns';
 import pt from 'date-fns/locale/pt-BR';
-import { withNavigationFocus } from 'react-navigation';
+import {withNavigationFocus} from 'react-navigation';
 import logo from '../../assets/logo.png';
 import Background from '../../components/Background';
-import Meetup from '../../components/Meetup'
-import api from '../../services/api'
+import Topics from '../../components/Topics';
+import api from '../../services/api';
 
 import {
   Container,
   Header,
   ImageLogo,
   ContainerHeader,
-  ButtonDate,
-  TextDate,
+  TextInfo,
+  Form,
+  FormInput,
   List,
-  NoMeetapps,
-  NoMeetappsText
+  InfoButton,
 } from './styles';
 
-
-function Dashboard() {
-  const [meetups, setMeetups] = useState([]);
-  const [date, setDate] = useState(new Date());
+function Dashboard({navigation}) {
+  const [topics, setTopics] = useState([]);
+  const [search, setSearch] = useState('');
+  const [date] = useState(new Date());
   const [refreshing] = useState(false);
-  const [noMeetups] = useState([1]);
 
-  const dateFormatted = useMemo(
-    () => format(date, "dd 'de' MMMM", { locale: pt }),
-    [date]
-  );
-  
   useEffect(() => {
-    async function loadMeetapps() {
-      const response = await api.get('meetups', { params: { date } });
-      
+    async function loadTopics() {
+      const response = await api.get('meetups');
+
       const data = response.data.map(m => ({
         ...m,
         formattedDate: format(parseISO(m.date), "d 'de' MMMM', às' hh'h'mm", {
           locale: pt,
         }),
       }));
-      setMeetups(data);
+      setTopics(data);
     }
-    loadMeetapps();
+    loadTopics();
   }, [date]);
-
-  function handlePrevDay() {
-    setDate(subDays(date, 1));
-  }
-
-  function handleNextDay() {
-    setDate(addDays(date, 1));
-  }
-
-  function handleRefresh() {
-    setDate(subDays(date, 0));
-  }
-
-   async function handleSubscribe(id) {
-    try {
-      await api.post(`meetups/${id}/subscriptions`);
-      handleRefresh();
-
-    } catch (e) {
-      Alert.alert("Erro")
-    }
-  }
-
-  async function handleUninscribe(id) {
-    try {
-      await api.delete(`subscriptions`);
-      handleRefresh();
-      successMessage('Meepapp successfully canceled');
-    } catch (e) {
-      errorMessage(e);
-    }
-  }
 
   return (
     <Background>
@@ -88,57 +49,42 @@ function Dashboard() {
           <ImageLogo source={logo} />
         </Header>
 
+        <Form>
+          <FormInput
+            icon="search"
+            autoCorrect={false}
+            autoCapitalize="none"
+            placeholder="Não encontou? Pesquise aqui"
+            value={search}
+            onChangeText={setSearch}
+          />
+        </Form>
+
         <ContainerHeader>
-          <ButtonDate onPress={handlePrevDay}>
-            <Icon name="navigate-before" size={36} color="#fff" />
-          </ButtonDate>
-          <TextDate>{dateFormatted}</TextDate>
-          <ButtonDate onPress={handleNextDay}>
-            <Icon name="navigate-next" size={36} color="#fff" />
-          </ButtonDate>
+          <TextInfo>Conteúdo</TextInfo>
         </ContainerHeader>
 
-        {meetups.length > 0 ? (
-            <List
-              data={meetups}
-              keyExtractor={item => String(item.id)}
-              renderItem={({ item }) => (
-                <Meetup
-                  data={item}
-                  handleSubscribe={() => handleSubscribe(item.id)}
-                  handleUninscribe={() => handleUninscribe(item.id)}
-                />
-              )}
-              onRefresh={handleRefresh}
-              refreshing={refreshing}
-            />
-          ) : (
-            <List
-              data={noMeetups}
-              keyExtractor={item => String(item)}
-              renderItem={() => (
-                <NoMeetapps>
-                  <Icon name="sentiment-dissatisfied" size={40} color="#fff" />
-                  <NoMeetappsText>
-                    Nenhum meetup marcado para hoje!
-                  </NoMeetappsText>
-                </NoMeetapps>
-              )}
-              onRefresh={handleRefresh}
-              refreshing={refreshing}
-            />
-          )}      
+        <List
+          data={topics}
+          keyExtractor={item => String(item.id)}
+          renderItem={({item}) => <Topics data={item} />}
+          refreshing={refreshing}
+        />
 
+        <InfoButton onPress={() => navigation.navigate('Vocational')}>
+          Pesquisa Vocacional
+        </InfoButton>
+        <InfoButton onPress={() => navigation.navigate('Indication')}>
+          Indique-me onde vou
+        </InfoButton>
       </Container>
     </Background>
   );
 }
 
 Dashboard.navigationOptions = {
-  tabBarLabel: 'Meetups',
-  tabBarIcon: ({ tintColor }) => (
-    <Icon name="list" size={20} color={tintColor} />
-  ),
+  tabBarLabel: 'Home',
+  tabBarIcon: ({tintColor}) => <Icon name="home" size={20} color={tintColor} />,
 };
 
 export default withNavigationFocus(Dashboard);

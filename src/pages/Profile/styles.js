@@ -9,7 +9,7 @@ export const Container = styled.SafeAreaView`
 
 export const Separator = styled.View`
   height: 1px;
-  background: rgba(255, 255, 255, 0.2);
+  background: #10bed8;
   margin: 20px 0 30px;
 `;
 
@@ -23,7 +23,7 @@ export const Title = styled.Text`
 
 export const Form = styled.ScrollView.attrs({
   showsVerticalScrollIndicator: false,
-  contentContainerStyle: { padding: 30 },
+  contentContainerStyle: {padding: 30},
 })`
   align-self: stretch;
 `;

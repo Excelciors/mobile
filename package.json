@@ -8,6 +8,12 @@
     "start": "react-native start",
     "test": "jest",
     "lint": "eslint .",
+    "device": "adb reverse tcp:9090 tcp:9090",
+    "initial": "react-native run-android",
+    "pos": "adb shell input keyevent 82",
+    "clean": "cd android && ./gradlew clean && cd ..",
+    "build": "cd android && ./gradlew build && cd ..",
+    "apk": "cd android && gradlew assembleRelease && cd ..",
     "postinstall": "jetify"
   },
   "dependencies": {

@@ -1,10 +1,10 @@
 /* eslint-disable react/prop-types */
-import React, { useRef, useState } from 'react';
-import { Image } from 'react-native';
-import { useDispatch, useSelector } from 'react-redux';
+import React, {useRef, useState} from 'react';
+import {Image} from 'react-native';
+import {useDispatch, useSelector} from 'react-redux';
 
 import logo from '../../assets/logo.png';
-import { signUpRequest } from '../../store/modules/auth/actions';
+import {signUpRequest} from '../../store/modules/auth/actions';
 
 import Background from '../../components/Background';
 import {
@@ -16,7 +16,7 @@ import {
   SignLinkText,
 } from './styles';
 
-export default function SignUp({ navigation }) {
+export default function SignUp({navigation}) {
   const emailRef = useRef();
   const passwordRef = useRef();
   const dispatch = useDispatch();
@@ -43,6 +43,17 @@ export default function SignUp({ navigation }) {
               autoCorrect={false}
               autoCapitalize="none"
               placeholder="Nome completo"
+              returnKeyType="next"
+              onSubmitEditing={() => emailRef.current.focus()}
+              value={name}
+              onChangeText={setName}
+            />
+
+            <FormInput
+              icon="phone"
+              autoCorrect={false}
+              autoCapitalize="none"
+              placeholder="Telefone"
               returnKeyType="next"
               onSubmitEditing={() => emailRef.current.focus()}
               value={name}
