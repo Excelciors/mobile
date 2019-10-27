@@ -4,4 +4,13 @@
   <item android:drawable="@color/primary" />
 
   <item android:height="200dp" android:width="200dp" android:drawable="@drawable/icon" android:gravity="center" />
+  <!-- <com.airbnb.lottie.LottieAnimationView
+    android:id=”@+id/lav_walking”
+    android:layout_width=”wrap_content”
+    android:layout_height=”wrap_content”
+    android:layout_below=”@+id/iv_splsh_logo”
+    android:layout_centerHorizontal=”true”
+    app:lottie_autoPlay=”true”
+    app:lottie_fileName=”@assets/descubra.json”
+    app:lottie_loop=”true” /> -->
 </layer-list>

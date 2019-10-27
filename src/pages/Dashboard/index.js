@@ -24,23 +24,19 @@ import {
 function Dashboard({navigation}) {
   const [topics, setTopics] = useState([]);
   const [search, setSearch] = useState('');
-  const [date] = useState(new Date());
+
   const [refreshing] = useState(false);
 
   useEffect(() => {
     async function loadTopics() {
-      const response = await api.get('meetups');
+      const response = await api.get('topic');
 
-      const data = response.data.map(m => ({
-        ...m,
-        formattedDate: format(parseISO(m.date), "d 'de' MMMM', às' hh'h'mm", {
-          locale: pt,
-        }),
-      }));
-      setTopics(data);
+      console.log(response.data);
+
+      setTopics(response.data);
     }
     loadTopics();
-  }, [date]);
+  }, []);
 
   return (
     <Background>
@@ -82,9 +78,9 @@ function Dashboard({navigation}) {
   );
 }
 
-Dashboard.navigationOptions = {
-  tabBarLabel: 'Home',
-  tabBarIcon: ({tintColor}) => <Icon name="home" size={20} color={tintColor} />,
-};
+// Dashboard.navigationOptions = {
+//   tabBarLabel: 'Home',
+//   tabBarIcon: ({tintColor}) => <Icon name="home" size={20} color={tintColor} />,
+// };
 
 export default withNavigationFocus(Dashboard);
